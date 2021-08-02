@@ -23,6 +23,7 @@
             <th>No</th>
             <th>Name</th>
             <th>Father Name</th>
+            <th>Image</th>
             <th>Details</th>
             <th width="280px">Action</th>
         </tr>
@@ -31,6 +32,7 @@
             <td>{{ ++$i }}</td>
             <td>{{ $product->name }}</td>
             <td>{{ $product->father_name }}</td>
+            <td>{{ HTML::image($product->file), 'alt text', array('class' => 'css-class')}}</td>
             <td>{{ $product->detail }}</td>
             <td>
                 <form action="{{ route('products.destroy',$product->id) }}" method="POST">

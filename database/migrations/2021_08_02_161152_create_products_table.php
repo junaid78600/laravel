@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('father_name');
             $table->text('detail');
+            $table->text('file');
             $table->timestamps();
         });
     }

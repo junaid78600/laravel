@@ -39,7 +39,19 @@ class ProductController extends Controller
             'name' => 'required',
             'father_name' => 'required',
             'detail' => 'required',
+            'file' => 'required|image|max:5048',
+
         ]);
+    //   print_r($request->toArray());exit();
+    //    $fileName = null;
+    // if (request()->hasFile('file')) {
+    //     $file = request()->file('file');
+    //     $fileName = md5($file->getClientOriginalName() . time()) . "." . $file->getClientOriginalExtension();
+    //     $file->move('uploads/', $fileName);    
+    // }
+       $imageName = time().'.'.$request->file->extension();  
+       $request->file->move(public_path('images'), $imageName);
+
         Product::create($request->all());
    
         return redirect()->route('products.index')
