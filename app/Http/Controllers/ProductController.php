@@ -13,6 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::latest()->paginate(5);
+        // echo "<pre>";print_r($products->toArray()['data'][0]);exit();
         return view('products.index',compact('products'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -42,17 +43,25 @@ class ProductController extends Controller
             'file' => 'required|image|max:5048',
 
         ]);
-    //   print_r($request->toArray());exit();
-    //    $fileName = null;
-    // if (request()->hasFile('file')) {
-    //     $file = request()->file('file');
-    //     $fileName = md5($file->getClientOriginalName() . time()) . "." . $file->getClientOriginalExtension();
-    //     $file->move('uploads/', $fileName);    
-    // }
-       $imageName = time().'.'.$request->file->extension();  
-       $request->file->move(public_path('images'), $imageName);
+       $fileName = null;
+    if (request()->hasFile('file')) {
+        $file = request()->file('file');
+        $fileName = md5($file->getClientOriginalName() . time()) . "." . $file->getClientOriginalExtension();
+        $file->move('uploads/', $fileName);
+        unset($request->file);
+        $request['file']=$fileName; 
+        // echo "<pre>";print_r($request->file);exit(); 
+    }
+    // print_r($file);exit();
+       // echo "<pre>";print_r($request);exit();
+       $data=[
+            'name' => $request->name,
+            'father_name' => $request->father_name,
+            'detail' => $request->detail,
+            'file' => $fileName
 
-        Product::create($request->all());
+        ];
+        Product::create($data);
    
         return redirect()->route('products.index')
                         ->with('success','Product created successfully.');
